@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <script>
+      const PLAYER = <%= player %>;
+      const HUB = '<%= hub %>';
+
+      const send = () => {
+        const action = document.getElementById('action').value;
+        socket.send(action);
+      };
+    </script>
+    <script src="/pixi.min.js"></script>
+    <script src="/main.js"></script>
+  </head>
+  <body>
+    <div>
+      <input id="action" type="text"/>
+      <button id="send" onClick="send()">send</button>
+    </div>
+    <br/>
+  </body>
+</html>

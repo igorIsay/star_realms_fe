@@ -1,0 +1,688 @@
+[
+    {
+        "cost": 6,
+        "defence": 0,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Battle-Blob-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "battleBlob",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 8 Combat<br>\nAlly: Draw a card.<br>\nScrap: Add 4 Combat",
+        "type": "Ship"
+    },
+    {
+        "cost": 2,
+        "defence": 0,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/BattlePod-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "battlePod",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 4 Combat<br>\nYou may scrap a card in the trade row.<br>\nAlly: Add 2 Combat",
+        "type": "Ship"
+    },
+    {
+        "cost": 6,
+        "defence": 0,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Blob-Carrier-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "blobCarrier",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 7 Combat<br>\nAlly: Acquire any ship without paying its cost and put it on top of your deck.<br>\n<i>\"Is that... a whale?\"<br><b>- HMS Defender</b>, final transmission.</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 4,
+        "defence": 0,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Blob-Destroyer-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "blobDestroyer",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 6 Combat<br>\nAlly: You may destroy target base and/or scrap a card in the trade row.<br>\n<i>When this monstrous ship shows up on a colony's sensors, they know the end is near...</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 1,
+        "defence": 0,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Blob-Fighter-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "blobFighter",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 3 Combat<br>\nAlly: Draw a card.<br>\n<i>Either kill it before it signals the hive or run. There are other choices, but none you'll live through.</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 3,
+        "defence": 5,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Blob-Wheel-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "blobWheel",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 1 Combat<br>\nScrap: Add 3 Trade",
+        "type": "Base"
+    },
+    {
+        "cost": 8,
+        "defence": 0,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Blob-World-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "blobWorld",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 5 Combat<br>\nOR<br>\nDraw a card for each Blob card that you've played this turn.",
+        "type": "Base"
+    },
+    {
+        "cost": 7,
+        "defence": 0,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Mothership-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "mothership",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 6 Combat<br>\nDraw a card.<br>\nAlly: Draw a card.",
+        "type": "Ship"
+    },
+    {
+        "cost": 3,
+        "defence": 0,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Ram-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "ram",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 5 Combat<br>\nAlly: Add 2 Combat<br>\nScrap: Add 3 Trade",
+        "type": "Ship"
+    },
+    {
+        "cost": 5,
+        "defence": 5,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/The-Hive-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "theHive",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 3 Combat<br>\nAlly: Draw a card",
+        "type": "Base"
+    },
+    {
+        "cost": 2,
+        "defence": 0,
+        "faction": "Blob",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Trade-Pod-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "tradePod",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 3 Trade<br>\nAlly: Add 2 Combat<br>\n<i>The loading and offloading process is efficient, but disgusting.</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 5,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Battle-Mech-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "battleMech",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 4 Combat<br>\nYou may scrap a card in your hand or discard pile.<br>\nAlly: Draw a card.",
+        "type": "Ship"
+    },
+    {
+        "cost": 3,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Battle-Station-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "battleStation",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Scrap: Add 5 Combat",
+        "type": "Base"
+    },
+    {
+        "cost": 8,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Brain-World-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "brainWorld",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Scrap up to two cards from your hand and/or discard pile. Draw a card for each card scrapped this way.<br>\n<i>The Machine Cult built these supercomputing space stations to run every aspect of their society. Now they worship them as gods.</i>",
+        "type": "Base"
+    },
+    {
+        "cost": 6,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Junkyard-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "junkyard",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Scrap a card in your hand or discard pile.<br>\n<i>The machine Cult's first commandment: \"Thou shalt not waste tech.\"</i>",
+        "type": "Base"
+    },
+    {
+        "cost": 7,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Machine-Base-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "machineBase",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Draw a card, then scrap a card from your hand.<br>\n<i>This high-tech city is like a beehive: it looks chaotic but vital work is being done efficiently at a frenetic pace.</i>",
+        "type": "Base"
+    },
+    {
+        "cost": 5,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Mech-World-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "mechWorld",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Mech World counts as an ally for all factions.<br>\n<i>The man-made planet is a galactic center for open source tech.</i>",
+        "type": "Base"
+    },
+    {
+        "cost": 2,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Missile-Bot-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "missileBot",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 2 Combat<br>\nYou may scrap a card in your hand or discard pile.<br>\nAlly: Add 2 Combat",
+        "type": "Ship"
+    },
+    {
+        "cost": 6,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Missile-Mech-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "missileMech",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 6 Combat<br>\nYou may destroy target base.<br>\nAlly: Draw a card",
+        "type": "Ship"
+    },
+    {
+        "cost": 4,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Patrol-Mech-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "patrolMech",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 3 Trade<br>\nOR<br>\nAdd 5 Combat<br>\nAlly: You may scrap a card in your hand or discard pile.<br>\n<i>With the Blobs an ever present danger, even the cult's cargo carrying mechs bristle with firepower.</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 4,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Stealth-Needle-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "stealthNeedle",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Copy another ship you've played this turn. Stealth Needle has that ship's faction in addition to Machine Cult.<br>\n<i>The Needle's ability to mimic other ships represents the pinnacle of Cult technology.</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 3,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Supply-Bot-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "supplyBot",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 2 Trade<br>\nYou may scrap a card in your hand or discard pile.<br>\nAlly: Add 2 Combat",
+        "type": "Ship"
+    },
+    {
+        "cost": 1,
+        "defence": 0,
+        "faction": "Machine Cult",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Trade-Bot-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "tradeBot",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 1 Trade<br>\nYou may scrap a card in your hand or discard pile.<br>\nAlly: Add 2 Combat",
+        "type": "Ship"
+    },
+    {
+        "cost": 6,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Battlecruiser-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "battlecruiser",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 5 Combat<br>\nDraw a card.<br>\nAlly: Target opponent discards a card.<br>\nScrap: Draw a card.<br>\nYou may destroy target base.",
+        "type": "Ship"
+    },
+    {
+        "cost": 2,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Corvette-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "corvette",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 1 Combat<br>\nDraw a card.<br>\nAlly: Add 2 Combat",
+        "type": "Ship"
+    },
+    {
+        "cost": 7,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Dreadnaught-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "dreadnaught",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 7 Combat<br>\nDraw a card.<br>\nScrap: Add 5 Combat",
+        "type": "Ship"
+    },
+    {
+        "cost": 8,
+        "defence": 8,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Fleet-HQ-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "fleetHQ",
+        "set": "Core",
+        "setQty": 1,
+        "text": "All of your ships get \"Add 1 Combat\"<br>\n<i>When an imperial fleet goes into battle, it's usually coordinated from afar by one of these mobile command centers.</i>",
+        "type": "Base"
+    },
+    {
+        "cost": 1,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Imperial-Fighter-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "imperialFighter",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 2 Combat<br>\nTarget opponent discards a card.<br>\nAlly: Add 2 Combat",
+        "type": "Ship"
+    },
+    {
+        "cost": 3,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Imperial-Frigate-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "imperialFrigate",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 4 Combat<br>\nTarget opponent discards a card.<br>\nAlly: Add 2 Combat<br>\nScrap: Draw a card",
+        "type": "Ship"
+    },
+    {
+        "cost": 4,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Recycling-Station-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "recyclingStation",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 1 Trade<br>\nOR<br>\nDiscard up to two cards, then draw that many cards.",
+        "type": "Base"
+    },
+    {
+        "cost": 6,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Royal-Redoubt-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "royalRedoubt",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 3 Combat<br>\nAlly: Target opponent discards a card.",
+        "type": "Base"
+    },
+    {
+        "cost": 4,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Space-Station-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "spaceStation",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 2 Combat<br>\nAlly: Add 2 Combat<br>\nScrap: Add 4 Trade",
+        "type": "Base"
+    },
+    {
+        "cost": 3,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Survey-Ship-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "surveyShip",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 1 Trade<br>\nDraw a card.<br>\nScrap: Target opponent discards a card.",
+        "type": "Ship"
+    },
+    {
+        "cost": 5,
+        "defence": 0,
+        "faction": "Star Empire",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/War-World-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "warWorld",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 3 Combat<br>\nAlly: Add 4 Combat",
+        "type": "Base"
+    },
+    {
+        "cost": 4,
+        "defence": 4,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Barter-World-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "barterWorld",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 2 Authority<br>\nOR<br>\nAdd 2 Trade<br>\nScrap: Add 5 Combat",
+        "type": "Base"
+    },
+    {
+        "cost": 7,
+        "defence": 6,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Central-Office-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "centralOffice",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 2 Trade<br>\nYou may put the next ship you acquire this turn on top of your deck.<br>\nAlly: Draw a card.",
+        "type": "Base"
+    },
+    {
+        "cost": 8,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Command-Ship-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "commandShip",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 4 Authority<br>\nAdd 5 Combat<br>\nDraw two cards.<br>\nAlly: You may destroy target base.",
+        "type": "Ship"
+    },
+    {
+        "cost": 2,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Cutter-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "cutter",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 4 Authority<br>\nAdd 2 Trade<br>\nAlly: Add 4 Combat<br>\n<i>\"Built for cargo, armed for conflict. Versatility for an unpredictable universe.\"<br><b>- Premier Aerospace Cargo Enterprises</b></i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 5,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Defense-Center-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "defenseCenter",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 3 Authority<br>\nOR<br>\nAdd 2 Combat<br>\nAlly: Add 2 Combat",
+        "type": "Base"
+    },
+    {
+        "cost": 3,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Embassy-Yacht-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "embassyYacht",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 3 Authority<br>\nAdd 2 Trade<br>\nIf you have two or more bases in play, draw two cards<br>\n<i>War should always be a last resort, it's bad for the bottom line.</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 1,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Federation-Shuttle-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "federationShuttle",
+        "set": "Core",
+        "setQty": 3,
+        "text": "Add 2 Trade<br>\nAlly: Add 4 Authority<br>\n<i>\"Fast? This baby doesn't just haul cargo. She hauls...\"</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 6,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Flagship-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "flagship",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 5 Combat<br>\nDraw a card.<br>\nAlly: Add 5 Authority",
+        "type": "Ship"
+    },
+    {
+        "cost": 4,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Freighter-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "freighter",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 4 Trade<br>\nAlly: You may put the next ship you acquire this turn on top of your deck.<br>\n<i>This class of mammoth cargo ships is one of the keys to the federation's vast trade-based wealth.</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 6,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Port-of-Call-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "portOfCall",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 3 Trade<br>\nScrap: Draw a card. You may destroy target base.",
+        "type": "Base"
+    },
+    {
+        "cost": 5,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Trade-Escort-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "tradeEscort",
+        "set": "Core",
+        "setQty": 1,
+        "text": "Add 4 Authority<br>\nAdd 4 Combat<br>\nAlly: Draw a card.<br>\n<i>The heavily-armored Escort class was the Federation's first response to the Blob threat.</i>",
+        "type": "Ship"
+    },
+    {
+        "cost": 3,
+        "defence": 0,
+        "faction": "Trade Federation",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Trading-Post-300x214.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "tradingPost",
+        "set": "Core",
+        "setQty": 2,
+        "text": "Add 1 Authority<br>\nOR<br>\nAdd 1 Trade<br>\nScrap: Add 3 Combat",
+        "type": "Base"
+    },
+    {
+        "cost": 2,
+        "defence": 0,
+        "faction": "Unaligned",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Explorer-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "explorer",
+        "set": "Core",
+        "setQty": 10,
+        "text": "Add 2 Trade<br>\nScrap: Add 2 Combat",
+        "type": "Ship"
+    },
+    {
+        "cost": 0,
+        "defence": 0,
+        "faction": "Unaligned",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Scout-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "scout",
+        "set": "Core",
+        "setQty": 16,
+        "text": "Add 1 Trade",
+        "type": "Ship"
+    },
+    {
+        "cost": 0,
+        "defence": 0,
+        "faction": "Unaligned",
+        "image": {
+            "back": "https://www.starrealms.com/wp-content/uploads/2017/12/Viper-214x300.jpg",
+            "front": "https://www.starrealms.com/wp-content/uploads/2017/12/Star-Realms-Back-214x300.jpg"
+        },
+        "name": "viper",
+        "set": "Core",
+        "setQty": 4,
+        "text": "Add 1 Combat",
+        "type": "Ship"
+    }
+]
