@@ -35,7 +35,7 @@ const playerMapper = ({ turn, player }) => {
       playerDiscard: FIRST_PLAYER_DISCARD,
       opponentHand: SECOND_PLAYER_HAND,
       opponentDeck: SECOND_PLAYER_DECK,
-      opponentDiscard: SECOND_PLAYER_DISCARD
+      opponentDiscard: SECOND_PLAYER_DISCARD,
     },
     [SECOND_PLAYER]: {
       playerHand: SECOND_PLAYER_HAND,
