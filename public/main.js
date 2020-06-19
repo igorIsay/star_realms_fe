@@ -8,24 +8,37 @@ const CARD_WIDHT = 107;
 const CARD_HEIGHT = 150;
 const OFFSET = 10;
 
+// const NONE_ACTION = 0;
+const PLAY_ACTION = 1;
+const END_ACTION = 2;
+const DAMAGE_ACTION = 3;
+const BUY_ACTION = 4;
+// const UTILIZE_ACTION = 5;
+const START_ACTION = 6;
+const DESTROY_BASE_ACTION = 7;
+
 const FIRST_PLAYER_HAND = 5;
 const FIRST_PLAYER_TABLE = 6;
 const FIRST_PLAYER_DECK = 4;
 const FIRST_PLAYER_DISCARD = 7;
+const FIRST_PLAYER_BASES = 8;
 
-const SECOND_PLAYER_HAND = 9;
-const SECOND_PLAYER_TABLE = 10;
-const SECOND_PLAYER_DECK = 8;
-const SECOND_PLAYER_DISCARD = 11;
+const SECOND_PLAYER_HAND = 10;
+const SECOND_PLAYER_TABLE = 11;
+const SECOND_PLAYER_DECK = 9;
+const SECOND_PLAYER_DISCARD = 12;
+const SECOND_PLAYER_BASES = 13;
 
 const EXPLORERS = 2;
 const TRADE_ROW = 1;
 
 let socket;
-const damage = (combat) => socket.send(`damage,${combat}`);
-const endTurn = () => socket.send('end');
-const play = (id) => socket.send(`play,${id}`);
-const buy = (id) => socket.send(`buy,${id}`);
+const damage = (combat) => socket.send(`${DAMAGE_ACTION},${combat}`);
+const play = (id) => socket.send(`${PLAY_ACTION},${id}`);
+const buy = (id) => socket.send(`${BUY_ACTION},${id}`);
+const destroy = (id) => socket.send(`${DESTROY_BASE_ACTION},${id}`);
+const endTurn = () => socket.send(END_ACTION);
+const start = () => socket.send(START_ACTION);
 
 const playerMapper = ({ turn, player }) => {
   const mapper = {
@@ -33,17 +46,21 @@ const playerMapper = ({ turn, player }) => {
       playerHand: FIRST_PLAYER_HAND,
       playerDeck: FIRST_PLAYER_DECK,
       playerDiscard: FIRST_PLAYER_DISCARD,
+      playerBases: FIRST_PLAYER_BASES,
       opponentHand: SECOND_PLAYER_HAND,
       opponentDeck: SECOND_PLAYER_DECK,
       opponentDiscard: SECOND_PLAYER_DISCARD,
+      opponentBases: SECOND_PLAYER_BASES,
     },
     [SECOND_PLAYER]: {
       playerHand: SECOND_PLAYER_HAND,
       playerDeck: SECOND_PLAYER_DECK,
       playerDiscard: SECOND_PLAYER_DISCARD,
+      playerBases: SECOND_PLAYER_BASES,
       opponentHand: FIRST_PLAYER_HAND,
       opponentDeck: FIRST_PLAYER_DECK,
       opponentDiscard: FIRST_PLAYER_DISCARD,
+      opponentBases: FIRST_PLAYER_BASES,
     },
   };
   const result = mapper[player];
@@ -75,7 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .add('explorer', '/explorer.jpg')
       .add('blobFighter', '/blobFighter.jpg')
       .add('tradePod', '/tradePod.jpg')
-      .add('ram', '/ram.jpg');
+      .add('ram', '/ram.jpg')
+      .add('theHive', '/theHive.jpg')
+      .add('blobWheel', '/blobWheel.jpg');
   };
 
   const renderCard = ({
@@ -85,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     width,
     height,
     events,
+    rotation,
   }) => {
     const sprite = new PIXI.Sprite(PIXI.Loader.shared.resources[id.split('_')[0]].texture); // eslint-disable-line no-undef
     sprite.x = x;
@@ -99,13 +119,47 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       sprite.height = CARD_HEIGHT;
     }
-    sprite.interactive = true;
     if (events) {
+      sprite.interactive = true;
       Object.keys(events).forEach((event) => {
         sprite.on(event, (e) => events[event]({ id, e }));
       });
     }
+    if (rotation) {
+      sprite.anchor.x = 0.5;
+      sprite.anchor.y = 0.5;
+      sprite.rotation = rotation;
+    }
     app.stage.addChild(sprite);
+  };
+
+  const renderPlayerBases = ({ x, y, cards }) => {
+    cards.forEach((card, index) => {
+      renderCard({
+        id: card.id,
+        x,
+        y: index > 0 ? y + index * CARD_WIDHT + OFFSET : y,
+        rotation: 1.571,
+      });
+    });
+  };
+
+  const renderOpponentBases = ({ y, cards }) => {
+    const blockWidth = CARD_HEIGHT * cards.length + OFFSET * (cards.length - 1);
+    let x = FIELD_WIDTH / 2 - blockWidth / 2 + CARD_HEIGHT / 2;
+    cards.forEach((card) => {
+      renderCard({
+        x,
+        y,
+        id: card.id,
+        rotation: 1.571,
+        events: {
+          tap: () => destroy(card.id),
+          click: () => destroy(card.id),
+        },
+      });
+      x += CARD_HEIGHT + OFFSET;
+    });
   };
 
   const renderDiscard = ({ x, y, cards }) => {
@@ -157,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderButtons = () => {
     const end = new PIXI.Text('END TURN'); // eslint-disable-line no-undef
-    end.position.set(FIELD_WIDTH / 2 - 80, FIELD_HEIGHT - 100);
+    end.position.set(FIELD_WIDTH / 2 - 80, FIELD_HEIGHT - 70);
     end.style = { fontSize: 30, fill: 'white' };
     end.interactive = true;
     end.on('click', endTurn);
@@ -252,15 +306,15 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const renderTrade = (cards) => {
-    renderCenteredRow({ cards, y: 50 });
+    renderCenteredRow({ cards, y: 150 });
   };
 
   const renderTable = (cards) => {
-    renderCenteredRow({ cards, y: 210 });
+    renderCenteredRow({ cards, y: 310 });
   };
 
   const renderHand = (cards) => {
-    renderCenteredRow({ cards, y: 375 });
+    renderCenteredRow({ cards, y: 475 });
   };
 
   const render = ({
@@ -268,14 +322,18 @@ document.addEventListener('DOMContentLoaded', () => {
     cards: rawCards,
     firstPlayerCounters,
     secondPlayerCounters,
+    // firstPlayerActionRequest,
+    // secondPlayerActionRequest,
   }) => {
     const {
       currentTable,
       playerHand,
       playerDeck,
       playerDiscard,
+      playerBases,
       opponentDeck,
       opponentDiscard,
+      opponentBases,
     } = playerMapper({ turn, player: PLAYER }); // eslint-disable-line no-undef
 
     app.stage.removeChildren();
@@ -330,11 +388,20 @@ document.addEventListener('DOMContentLoaded', () => {
         secondPlayerCounters,
       }),
     );
+    renderPlayerBases({
+      x: 130,
+      y: 250,
+      cards: cards.filter((card) => card.location === playerBases),
+    });
+    renderOpponentBases({
+      y: 80,
+      cards: cards.filter((card) => card.location === opponentBases),
+    });
     renderButtons();
   };
 
   const connect = () => {
-    socket = new WebSocket(`ws://localhost:8080/hubs/${HUB}?player=${PLAYER}`); // eslint-disable-line
+    socket = new WebSocket(`ws://localhost:8080/hubs/${HUB}?player=${PLAYER}`); // eslint-disable-line no-undef
 
     socket.onerror = () => {
       const xhr = new XMLHttpRequest();
@@ -345,7 +412,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     socket.onmessage = ({ data }) => {
-      render(JSON.parse(data));
+      const parsedData = JSON.parse(data);
+      if (
+        parsedData.turn === PLAYER // eslint-disable-line no-undef
+        && parsedData.firstPlayerActionRequest === START_ACTION
+      ) {
+        start();
+      }
+      render(parsedData);
     };
   };
 
