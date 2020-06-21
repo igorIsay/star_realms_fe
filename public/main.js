@@ -16,6 +16,7 @@ const BUY_ACTION = 4;
 // const UTILIZE_ACTION = 5;
 const START_ACTION = 6;
 const DESTROY_BASE_ACTION = 7;
+const DISCARD_ACTION = 8;
 
 const FIRST_PLAYER_HAND = 5;
 const FIRST_PLAYER_TABLE = 6;
@@ -37,8 +38,23 @@ const damage = (combat) => socket.send(`${DAMAGE_ACTION},${combat}`);
 const play = (id) => socket.send(`${PLAY_ACTION},${id}`);
 const buy = (id) => socket.send(`${BUY_ACTION},${id}`);
 const destroy = (id) => socket.send(`${DESTROY_BASE_ACTION},${id}`);
+const discard = (id) => socket.send(`${DISCARD_ACTION},${id}`);
 const endTurn = () => socket.send(END_ACTION);
 const start = () => socket.send(START_ACTION);
+
+const actionRequestMapper = ({
+  player,
+  requests: { firstPlayerActionRequest, secondPlayerActionRequest },
+}) => {
+  switch (player) {
+    case FIRST_PLAYER:
+      return firstPlayerActionRequest;
+    case SECOND_PLAYER:
+      return secondPlayerActionRequest;
+    default:
+      return undefined;
+  }
+};
 
 const playerMapper = ({ turn, player }) => {
   const mapper = {
@@ -94,7 +110,15 @@ document.addEventListener('DOMContentLoaded', () => {
       .add('tradePod', '/tradePod.jpg')
       .add('ram', '/ram.jpg')
       .add('theHive', '/theHive.jpg')
-      .add('blobWheel', '/blobWheel.jpg');
+      .add('blobWheel', '/blobWheel.jpg')
+      .add('corvette', '/corvette.jpg')
+      .add('dreadnaught', '/dreadnaught.jpg')
+      .add('imperialFighter', '/imperialFighter.jpg')
+      .add('imperialFrigate', '/imperialFrigate.jpg')
+      .add('royalRedoubt', '/royalRedoubt.jpg')
+      .add('spaceStation', '/spaceStation.jpg')
+      .add('surveyShip', '/surveyShip.jpg')
+      .add('warWorld', '/warWorld.jpg');
   };
 
   const renderCard = ({
@@ -322,8 +346,8 @@ document.addEventListener('DOMContentLoaded', () => {
     cards: rawCards,
     firstPlayerCounters,
     secondPlayerCounters,
-    // firstPlayerActionRequest,
-    // secondPlayerActionRequest,
+    firstPlayerActionRequest,
+    secondPlayerActionRequest,
   }) => {
     const {
       currentTable,
@@ -335,6 +359,11 @@ document.addEventListener('DOMContentLoaded', () => {
       opponentDiscard,
       opponentBases,
     } = playerMapper({ turn, player: PLAYER }); // eslint-disable-line no-undef
+
+    const actionRequest = actionRequestMapper({
+      player: PLAYER, // eslint-disable-line no-undef
+      requests: { firstPlayerActionRequest, secondPlayerActionRequest },
+    });
 
     app.stage.removeChildren();
     const cards = Object.keys(rawCards).map((id) => ({ id, location: rawCards[id].Location }));
@@ -365,8 +394,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .map((card) => ({
           ...card,
           events: {
-            tap: ({ id }) => play(id),
-            click: ({ id }) => play(id),
+            tap: ({ id }) => (actionRequest === DISCARD_ACTION ? discard(id) : play(id)),
+            click: ({ id }) => (actionRequest === DISCARD_ACTION ? discard(id) : play(id)),
           },
         })),
     );
@@ -413,9 +442,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.onmessage = ({ data }) => {
       const parsedData = JSON.parse(data);
+      const {
+        turn,
+        firstPlayerActionRequest,
+        secondPlayerActionRequest,
+      } = parsedData;
+      const actionRequest = actionRequestMapper({
+        player: PLAYER, // eslint-disable-line no-undef
+        requests: { firstPlayerActionRequest, secondPlayerActionRequest },
+      });
       if (
-        parsedData.turn === PLAYER // eslint-disable-line no-undef
-        && parsedData.firstPlayerActionRequest === START_ACTION
+        turn === PLAYER // eslint-disable-line no-undef
+        && actionRequest === START_ACTION
       ) {
         start();
       }
