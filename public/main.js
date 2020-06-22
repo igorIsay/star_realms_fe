@@ -13,7 +13,7 @@ const PLAY_ACTION = 1;
 const END_ACTION = 2;
 const DAMAGE_ACTION = 3;
 const BUY_ACTION = 4;
-// const UTILIZE_ACTION = 5;
+const UTILIZE_ACTION = 5;
 const START_ACTION = 6;
 const DESTROY_BASE_ACTION = 7;
 const DISCARD_ACTION = 8;
@@ -39,6 +39,7 @@ const play = (id) => socket.send(`${PLAY_ACTION},${id}`);
 const buy = (id) => socket.send(`${BUY_ACTION},${id}`);
 const destroy = (id) => socket.send(`${DESTROY_BASE_ACTION},${id}`);
 const discard = (id) => socket.send(`${DISCARD_ACTION},${id}`);
+const utilize = (id) => socket.send(`${UTILIZE_ACTION},${id}`);
 const endTurn = () => socket.send(END_ACTION);
 const start = () => socket.send(START_ACTION);
 
@@ -164,6 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
         x,
         y: index > 0 ? y + index * CARD_WIDHT + OFFSET : y,
         rotation: 1.571,
+        events: {
+          tap: () => utilize(card.id),
+          click: () => utilize(card.id),
+        },
       });
     });
   };
@@ -334,7 +339,16 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const renderTable = (cards) => {
-    renderCenteredRow({ cards, y: 310 });
+    renderCenteredRow({
+      cards: cards.map(
+        (card) => ({
+          ...card,
+          events: {
+            tap: () => utilize(card.id),
+            click: () => utilize(card.id),
+          },
+        })
+      ), y: 310 });
   };
 
   const renderHand = (cards) => {
