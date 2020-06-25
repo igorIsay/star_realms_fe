@@ -17,21 +17,23 @@ const UTILIZE_ACTION = 5;
 const START_ACTION = 6;
 const DESTROY_BASE_ACTION = 7;
 const DISCARD_ACTION = 8;
+const SCRAP_CARD = 9;
 
-const FIRST_PLAYER_HAND = 5;
-const FIRST_PLAYER_TABLE = 6;
-const FIRST_PLAYER_DECK = 4;
-const FIRST_PLAYER_DISCARD = 7;
-const FIRST_PLAYER_BASES = 8;
+// LOCATION
+const FIRST_PLAYER_HAND = 6;
+const FIRST_PLAYER_TABLE = 7;
+const FIRST_PLAYER_DECK = 5;
+const FIRST_PLAYER_DISCARD = 8;
+const FIRST_PLAYER_BASES = 9;
 
-const SECOND_PLAYER_HAND = 10;
-const SECOND_PLAYER_TABLE = 11;
-const SECOND_PLAYER_DECK = 9;
-const SECOND_PLAYER_DISCARD = 12;
-const SECOND_PLAYER_BASES = 13;
+const SECOND_PLAYER_HAND = 11;
+const SECOND_PLAYER_TABLE = 12;
+const SECOND_PLAYER_DECK = 10;
+const SECOND_PLAYER_DISCARD = 13;
+const SECOND_PLAYER_BASES = 14;
 
-const EXPLORERS = 2;
-const TRADE_ROW = 1;
+const EXPLORERS = 3;
+const TRADE_ROW = 2;
 
 let socket;
 const damage = (combat) => socket.send(`${DAMAGE_ACTION},${combat}`);
@@ -40,6 +42,7 @@ const buy = (id) => socket.send(`${BUY_ACTION},${id}`);
 const destroy = (id) => socket.send(`${DESTROY_BASE_ACTION},${id}`);
 const discard = (id) => socket.send(`${DISCARD_ACTION},${id}`);
 const utilize = (id) => socket.send(`${UTILIZE_ACTION},${id}`);
+const scrap = (id) => socket.send(`${SCRAP_CARD},${id}`);
 const endTurn = () => socket.send(END_ACTION);
 const start = () => socket.send(START_ACTION);
 
@@ -119,7 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
       .add('royalRedoubt', '/royalRedoubt.jpg')
       .add('spaceStation', '/spaceStation.jpg')
       .add('surveyShip', '/surveyShip.jpg')
-      .add('warWorld', '/warWorld.jpg');
+      .add('warWorld', '/warWorld.jpg')
+      .add('battleMech', '/battleMech.jpg')
+      .add('missileBot', '/missileBot.jpg')
+      .add('supplyBot', '/supplyBot.jpg')
+      .add('tradeBot', '/tradeBot.jpg');
   };
 
   const renderCard = ({
@@ -347,8 +354,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tap: () => utilize(card.id),
             click: () => utilize(card.id),
           },
-        })
-      ), y: 310 });
+        }),
+      ),
+      y: 310,
+    });
   };
 
   const renderHand = (cards) => {
@@ -402,14 +411,24 @@ document.addEventListener('DOMContentLoaded', () => {
       y: 50,
       cards: cards.filter((card) => card.location === opponentDiscard),
     });
+    const handEventsHandler = ({ id }) => {
+      switch (actionRequest) {
+        case DISCARD_ACTION:
+          return discard(id);
+        case SCRAP_CARD:
+          return scrap(id);
+        default:
+          return play(id);
+      }
+    };
     renderHand(
       cards
         .filter((card) => card.location === playerHand)
         .map((card) => ({
           ...card,
           events: {
-            tap: ({ id }) => (actionRequest === DISCARD_ACTION ? discard(id) : play(id)),
-            click: ({ id }) => (actionRequest === DISCARD_ACTION ? discard(id) : play(id)),
+            tap: handEventsHandler,
+            click: handEventsHandler,
           },
         })),
     );
