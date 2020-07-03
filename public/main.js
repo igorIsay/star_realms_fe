@@ -13,11 +13,15 @@ const PLAY_ACTION = 1;
 const END_ACTION = 2;
 const DAMAGE_ACTION = 3;
 const BUY_ACTION = 4;
-const UTILIZE_ACTION = 5;
 const START_ACTION = 6;
 const DESTROY_BASE_ACTION = 7;
 const DISCARD_ACTION = 8;
-const SCRAP_CARD = 9;
+const ACTIVATE_ABILITY_ACTION = 9;
+const SCRAP_CARD_ACTION = 10;
+const SCRAP_CARD_TRADE_ROW_ACTION = 11;
+const DESTROY_BASE_FOR_FREE_ACTION = 12;
+const ACQUIRE_SHIP_FOR_FREE = 13;
+const DESTROY_BASE_BLOB_DESTROYER_ACTION = 14;
 
 // LOCATION
 const FIRST_PLAYER_HAND = 6;
@@ -35,14 +39,28 @@ const SECOND_PLAYER_BASES = 14;
 const EXPLORERS = 3;
 const TRADE_ROW = 2;
 
+// ABILITIES
+const PATROL_MECH_TRADE = 2;
+const PATROL_MECH_COMBAT = 3;
+const TRADING_POST_AUTHORITY = 8;
+const TRADING_POST_TRADE = 9;
+const BARTER_WORLD_AUTHORITY = 10;
+const BARTER_WORLD_TRADE = 11;
+const DEFENSE_CENTER_AUTHORITY = 12;
+const DEFENSE_CENTER_COMBAT = 13;
+
 let socket;
 const damage = (combat) => socket.send(`${DAMAGE_ACTION},${combat}`);
 const play = (id) => socket.send(`${PLAY_ACTION},${id}`);
 const buy = (id) => socket.send(`${BUY_ACTION},${id}`);
 const destroy = (id) => socket.send(`${DESTROY_BASE_ACTION},${id}`);
+const destroyBaseMissileMech = (id) => socket.send(`${DESTROY_BASE_FOR_FREE_ACTION},${id}`);
+const destroyBaseBlobDestroyer = (id) => socket.send(`${DESTROY_BASE_BLOB_DESTROYER_ACTION},${id}`);
 const discard = (id) => socket.send(`${DISCARD_ACTION},${id}`);
-const utilize = (id) => socket.send(`${UTILIZE_ACTION},${id}`);
-const scrap = (id) => socket.send(`${SCRAP_CARD},${id}`);
+const scrap = (id) => socket.send(`${SCRAP_CARD_ACTION},${id}`);
+const acquireShipForFree = (id) => socket.send(`${ACQUIRE_SHIP_FOR_FREE},${id}`);
+const scrapTradeRow = (id) => socket.send(`${SCRAP_CARD_TRADE_ROW_ACTION},${id}`);
+const activateAbility = (cardId, abilityId) => socket.send(`${ACTIVATE_ABILITY_ACTION},${cardId},${abilityId}`);
 const endTurn = () => socket.send(END_ACTION);
 const start = () => socket.send(START_ACTION);
 
@@ -115,6 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .add('ram', '/ram.jpg')
       .add('theHive', '/theHive.jpg')
       .add('blobWheel', '/blobWheel.jpg')
+      .add('battlePod', '/battlePod.jpg')
+      .add('blobCarrier', '/blobCarrier.jpg')
+      .add('blobDestroyer', '/blobDestroyer.jpg')
       .add('corvette', '/corvette.jpg')
       .add('dreadnaught', '/dreadnaught.jpg')
       .add('imperialFighter', '/imperialFighter.jpg')
@@ -123,10 +144,22 @@ document.addEventListener('DOMContentLoaded', () => {
       .add('spaceStation', '/spaceStation.jpg')
       .add('surveyShip', '/surveyShip.jpg')
       .add('warWorld', '/warWorld.jpg')
+      .add('battlecruiser', '/battlecruiser.jpg')
       .add('battleMech', '/battleMech.jpg')
       .add('missileBot', '/missileBot.jpg')
       .add('supplyBot', '/supplyBot.jpg')
-      .add('tradeBot', '/tradeBot.jpg');
+      .add('tradeBot', '/tradeBot.jpg')
+      .add('missileMech', '/missileMech.jpg')
+      .add('patrolMech', '/patrolMech.jpg')
+      .add('federationShuttle', '/federationShuttle.jpg')
+      .add('cutter', '/cutter.jpg')
+      .add('tradeEscort', '/tradeEscort.jpg')
+      .add('flagship', '/flagship.jpg')
+      .add('commandShip', '/commandShip.jpg')
+      .add('tradingPost', '/tradingPost.jpg')
+      .add('barterWorld', '/barterWorld.jpg')
+      .add('defenseCenter', '/defenseCenter.jpg')
+      .add('portOfCall', '/portOfCall.jpg');
   };
 
   const renderCard = ({
@@ -165,22 +198,135 @@ document.addEventListener('DOMContentLoaded', () => {
     app.stage.addChild(sprite);
   };
 
-  const renderPlayerBases = ({ x, y, cards }) => {
+  const renderPatrolMechAbilities = (cardId) => {
+    const trade = new PIXI.Text(3); // eslint-disable-line no-undef
+    trade.position.set(FIELD_WIDTH - 120, FIELD_HEIGHT / 2);
+    trade.style = { fontSize: 55, fill: '#EDDA54' };
+    trade.interactive = true;
+    const tradeEventHandler = () => activateAbility(cardId, PATROL_MECH_TRADE);
+    trade.on('click', tradeEventHandler);
+    trade.on('tap', tradeEventHandler);
+    app.stage.addChild(trade);
+
+    const combat = new PIXI.Text(5); // eslint-disable-line no-undef
+    combat.position.set(FIELD_WIDTH - 60, FIELD_HEIGHT / 2);
+    combat.style = { fontSize: 55, fill: '#CF383C' };
+    combat.interactive = true;
+    const combatEventHandler = () => activateAbility(cardId, PATROL_MECH_COMBAT);
+    combat.on('click', combatEventHandler);
+    combat.on('tap', combatEventHandler);
+    app.stage.addChild(combat);
+  };
+
+  const renderAbilities = (cardId) => {
+    const card = cardId.split('_')[0];
+    let render = () => {};
+    switch (card) {
+      case 'tradingPost':
+        render = (id) => {
+          const trade = new PIXI.Text(1); // eslint-disable-line no-undef
+          trade.position.set(FIELD_WIDTH - 120, FIELD_HEIGHT / 2);
+          trade.style = { fontSize: 55, fill: '#EDDA54' };
+          trade.interactive = true;
+          const tradeEventHandler = () => activateAbility(id, TRADING_POST_TRADE);
+          trade.on('click', tradeEventHandler);
+          trade.on('tap', tradeEventHandler);
+          app.stage.addChild(trade);
+
+          const authority = new PIXI.Text(1); // eslint-disable-line no-undef
+          authority.position.set(FIELD_WIDTH - 60, FIELD_HEIGHT / 2);
+          authority.style = { fontSize: 55, fill: '#58B265' };
+          authority.interactive = true;
+          const authorityEventHandler = () => activateAbility(id, TRADING_POST_AUTHORITY);
+          authority.on('click', authorityEventHandler);
+          authority.on('tap', authorityEventHandler);
+          app.stage.addChild(authority);
+        };
+        break;
+      case 'barterWorld':
+        render = (id) => {
+          const trade = new PIXI.Text(2); // eslint-disable-line no-undef
+          trade.position.set(FIELD_WIDTH - 120, FIELD_HEIGHT / 2);
+          trade.style = { fontSize: 55, fill: '#EDDA54' };
+          trade.interactive = true;
+          const tradeEventHandler = () => activateAbility(id, BARTER_WORLD_TRADE);
+          trade.on('click', tradeEventHandler);
+          trade.on('tap', tradeEventHandler);
+          app.stage.addChild(trade);
+
+          const authority = new PIXI.Text(2); // eslint-disable-line no-undef
+          authority.position.set(FIELD_WIDTH - 60, FIELD_HEIGHT / 2);
+          authority.style = { fontSize: 55, fill: '#58B265' };
+          authority.interactive = true;
+          const authorityEventHandler = () => activateAbility(id, BARTER_WORLD_AUTHORITY);
+          authority.on('click', authorityEventHandler);
+          authority.on('tap', authorityEventHandler);
+          app.stage.addChild(authority);
+        };
+        break;
+      case 'defenseCenter':
+        render = (id) => {
+          const combat = new PIXI.Text(2); // eslint-disable-line no-undef
+          combat.position.set(FIELD_WIDTH - 120, FIELD_HEIGHT / 2);
+          combat.style = { fontSize: 55, fill: '#CF383C' };
+          combat.interactive = true;
+          const combatEventHandler = () => activateAbility(id, DEFENSE_CENTER_COMBAT);
+          combat.on('click', combatEventHandler);
+          combat.on('tap', combatEventHandler);
+          app.stage.addChild(combat);
+
+          const authority = new PIXI.Text(3); // eslint-disable-line no-undef
+          authority.position.set(FIELD_WIDTH - 60, FIELD_HEIGHT / 2);
+          authority.style = { fontSize: 55, fill: '#58B265' };
+          authority.interactive = true;
+          const authorityEventHandler = () => activateAbility(id, DEFENSE_CENTER_AUTHORITY);
+          authority.on('click', authorityEventHandler);
+          authority.on('tap', authorityEventHandler);
+          app.stage.addChild(authority);
+        };
+        break;
+      default:
+        return;
+    }
+    render(cardId);
+  };
+
+  const renderPlayerBases = ({
+    x,
+    y,
+    cards,
+    activatedAbilities,
+  }) => {
     cards.forEach((card, index) => {
+      const eventsHandler = () => {
+        const abilities = activatedAbilities[card.id];
+        const activeAbilities = Object.keys(abilities).filter(
+          (id) => abilities[id] === true,
+        );
+        switch (activeAbilities.length) {
+          case 0:
+            break;
+          case 1:
+            activateAbility(card.id, activeAbilities[0]);
+            break;
+          default:
+            renderAbilities(card.id);
+        }
+      };
       renderCard({
         id: card.id,
         x,
         y: index > 0 ? y + index * CARD_WIDHT + OFFSET : y,
         rotation: 1.571,
         events: {
-          tap: () => utilize(card.id),
-          click: () => utilize(card.id),
+          tap: () => eventsHandler(),
+          click: () => eventsHandler(),
         },
       });
     });
   };
 
-  const renderOpponentBases = ({ y, cards }) => {
+  const renderOpponentBases = ({ y, cards, eventHandler }) => {
     const blockWidth = CARD_HEIGHT * cards.length + OFFSET * (cards.length - 1);
     let x = FIELD_WIDTH / 2 - blockWidth / 2 + CARD_HEIGHT / 2;
     cards.forEach((card) => {
@@ -190,8 +336,8 @@ document.addEventListener('DOMContentLoaded', () => {
         id: card.id,
         rotation: 1.571,
         events: {
-          tap: () => destroy(card.id),
-          click: () => destroy(card.id),
+          tap: () => eventHandler(card.id),
+          click: () => eventHandler(card.id),
         },
       });
       x += CARD_HEIGHT + OFFSET;
@@ -345,16 +491,33 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCenteredRow({ cards, y: 150 });
   };
 
-  const renderTable = (cards) => {
+  const renderTable = ({ cards, activatedAbilities }) => {
     renderCenteredRow({
       cards: cards.map(
-        (card) => ({
-          ...card,
-          events: {
-            tap: () => utilize(card.id),
-            click: () => utilize(card.id),
-          },
-        }),
+        (card) => {
+          const tableEventsHandler = () => {
+            const abilities = activatedAbilities[card.id];
+            const activeAbilities = Object.keys(abilities).filter(
+              (id) => abilities[id] === true,
+            );
+            switch (activeAbilities.length) {
+              case 0:
+                break;
+              case 1:
+                activateAbility(card.id, activeAbilities[0]);
+                break;
+              default:
+                renderAbilities(card.id);
+            }
+          };
+          return {
+            ...card,
+            events: {
+              tap: () => tableEventsHandler(),
+              click: () => tableEventsHandler(),
+            },
+          };
+        },
       ),
       y: 310,
     });
@@ -371,6 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
     secondPlayerCounters,
     firstPlayerActionRequest,
     secondPlayerActionRequest,
+    activatedAbilities,
   }) => {
     const {
       currentTable,
@@ -389,8 +553,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     app.stage.removeChildren();
-    const cards = Object.keys(rawCards).map((id) => ({ id, location: rawCards[id].Location }));
-    renderTable(cards.filter((card) => card.location === currentTable));
+
+    if (actionRequest.action === ACTIVATE_ABILITY_ACTION) {
+      if (actionRequest.cardId.startsWith('patrolMech')) {
+        renderPatrolMechAbilities(actionRequest.cardId);
+      }
+    }
+
+    const cards = Object.keys(rawCards).map((id) => ({ id, location: rawCards[id].location }));
+    renderTable({
+      cards: cards.filter((card) => card.location === currentTable),
+      activatedAbilities,
+    });
     renderDeck({
       x: 50,
       y: FIELD_HEIGHT - 150,
@@ -412,10 +586,10 @@ document.addEventListener('DOMContentLoaded', () => {
       cards: cards.filter((card) => card.location === opponentDiscard),
     });
     const handEventsHandler = ({ id }) => {
-      switch (actionRequest) {
+      switch (actionRequest.action) {
         case DISCARD_ACTION:
           return discard(id);
-        case SCRAP_CARD:
+        case SCRAP_CARD_ACTION:
           return scrap(id);
         default:
           return play(id);
@@ -432,14 +606,24 @@ document.addEventListener('DOMContentLoaded', () => {
           },
         })),
     );
+    const tradeEventsHandler = ({ id }) => {
+      switch (actionRequest.action) {
+        case SCRAP_CARD_TRADE_ROW_ACTION:
+          return scrapTradeRow(id);
+        case ACQUIRE_SHIP_FOR_FREE:
+          return acquireShipForFree(id);
+        default:
+          return buy(id);
+      }
+    };
     renderTrade(
       [{ ...cards.filter((card) => card.location === EXPLORERS)[0] }]
         .concat(cards.filter((card) => card.location === TRADE_ROW))
         .map((card) => ({
           ...card,
           events: {
-            tap: ({ id }) => buy(id),
-            click: ({ id }) => buy(id),
+            tap: tradeEventsHandler,
+            click: tradeEventsHandler,
           },
         })),
     );
@@ -454,10 +638,21 @@ document.addEventListener('DOMContentLoaded', () => {
       x: 130,
       y: 250,
       cards: cards.filter((card) => card.location === playerBases),
+      activatedAbilities,
     });
     renderOpponentBases({
       y: 80,
       cards: cards.filter((card) => card.location === opponentBases),
+      eventHandler: (id) => {
+        switch (actionRequest.action) {
+          case DESTROY_BASE_FOR_FREE_ACTION:
+            return destroyBaseMissileMech(id);
+          case DESTROY_BASE_BLOB_DESTROYER_ACTION:
+            return destroyBaseBlobDestroyer(id);
+          default:
+            return destroy(id);
+        }
+      },
     });
     renderButtons();
   };
@@ -486,7 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       if (
         turn === PLAYER // eslint-disable-line no-undef
-        && actionRequest === START_ACTION
+        && actionRequest.action === START_ACTION
       ) {
         start();
       }
