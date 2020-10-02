@@ -1,21 +1,86 @@
 const FIRST_PLAYER = 1;
 const SECOND_PLAYER = 2;
 
-const FIELD_WIDTH = 1280;
-const FIELD_HEIGHT = 720;
-
-const CARD_WIDHT = 107;
-const CARD_HEIGHT = 150;
-const CARD_WIDHT_S = 71;
-const CARD_HEIGHT_S = 100;
-const OFFSET = 10;
-
-const MOVE_CARD_STATE_ACTION = 2;
-
 const FRONT_SIDE = 0;
 const BACK_SIDE = 1;
 
-// const NONE_ACTION = 0;
+// SIZES AND OFFSETS
+
+const fieldSize = ({ windowWidth, windowHeight }) => {
+  const ratio = 0.9;
+  let FIELD_WIDTH = windowWidth >= 1200 ? 1000 : windowWidth * ratio;
+  const abs = (x) =>  x / (1000 / FIELD_WIDTH);
+  let FIELD_HEIGHT = abs(562);
+  if (FIELD_HEIGHT > windowHeight * ratio) {
+    FIELD_WIDTH = 1000 / (562 / (windowHeight * ratio));
+    FIELD_HEIGHT = abs(562);
+  }
+  return { FIELD_WIDTH, FIELD_HEIGHT };
+}
+
+let { FIELD_WIDTH, FIELD_HEIGHT } = fieldSize({ windowWidth: window.innerWidth, windowHeight: window.innerHeight });
+const abs = (x) =>  x / (1000 / FIELD_WIDTH);
+
+const CARD_WIDHT    = abs(83.6);
+const CARD_HEIGHT   = abs(117);
+const CARD_WIDHT_S  = abs(55.5);
+const CARD_HEIGHT_S = abs(78);
+
+const OFFSET = abs(7.8);
+
+// COORDINATES
+const HAND_AREA_WIDTH  = abs(507.8);
+const HAND_AREA_Y      = abs(390.6);
+const HAND_AREA_HEIGHT = CARD_HEIGHT;
+const HAND_AREA_X      = FIELD_WIDTH / 2;
+
+const BASES_AREA_WIDTH  = CARD_HEIGHT;
+const BASES_AREA_HEIGHT = abs(390.6);
+const BASES_AREA_X      = abs(78.1);
+const BASES_AREA_Y      = abs(312.5);
+
+const OPPONENT_BASES_AREA_WIDTH  = abs(390.6);
+const OPPONENT_BASES_AREA_Y      = abs(31.2);
+const OPPONENT_BASES_AREA_HEIGHT = CARD_WIDHT;
+const OPPONENT_BASES_AREA_X      = FIELD_WIDTH / 2;
+
+const OPPONENT_HAND_AREA_WIDTH  = abs(234.3);
+const OPPONENT_HAND_AREA_X      = abs(125);
+const OPPONENT_HAND_AREA_Y      = abs(7.8);
+const OPPONENT_HAND_AREA_HEIGHT = CARD_HEIGHT_S;
+
+const TRADE_AREA_X = FIELD_WIDTH / 2 + abs(46.8);
+const TRADE_AREA_Y = abs(132.8);
+const TRADE_AREA_HEIGHT = CARD_HEIGHT;
+
+const TRADE_DECK_X = TRADE_AREA_X + (CARD_WIDHT * 5 + abs(125)) / 2; 
+const TRADE_DECK_Y = TRADE_AREA_Y + CARD_HEIGHT / 2; 
+
+const EXPLORERS_X = abs(275.3);
+const EXPLORERS_Y = TRADE_AREA_Y + CARD_HEIGHT / 2;
+
+const PLAYER_DECK_X   = FIELD_WIDTH - abs(117.1);
+const PLAYER_DECK_Y   = FIELD_HEIGHT - abs(62.5);
+const OPPONENT_DECK_X = FIELD_WIDTH - abs(117.1);
+const OPPONENT_DECK_Y = abs(62.5);
+
+const TABLE_AREA_WIDTH = abs(507.8);
+const TABLE_AREA_HEIGHT = CARD_HEIGHT;
+const TABLE_AREA_X = FIELD_WIDTH / 2 - TABLE_AREA_WIDTH / 2;
+const TABLE_AREA_Y = abs(320.3) - CARD_HEIGHT / 2;
+
+const DISCARD_AREA_X = FIELD_WIDTH - abs(179.6);
+const DISCARD_AREA_Y = FIELD_HEIGHT - abs(62.5);
+
+const OPPONENT_DISCARD_AREA_X = FIELD_WIDTH - abs(179.6);
+const OPPONENT_DISCARD_AREA_Y = abs(62.5);
+
+
+
+// STATE ACTIONS
+const MOVE_CARD_STATE_ACTION = 2;
+
+// ACTIONS
 const PLAY_ACTION = 1;
 const END_ACTION = 2;
 const DAMAGE_ACTION = 3;
@@ -64,41 +129,7 @@ const DEFENSE_CENTER_COMBAT = 13;
 const BLOB_WORLD_COMBAT = 18;
 const BLOB_WORLD_DRAW = 19;
 
-// COORDINATES
-const HAND_AREA_WIDTH = 650;
-const HAND_AREA_HEIGHT = CARD_HEIGHT;
-const HAND_AREA_X = FIELD_WIDTH / 2;
-const HAND_AREA_Y = 500;
 
-const BASES_AREA_WIDTH = CARD_HEIGHT;
-const BASES_AREA_HEIGHT = 500;
-const BASES_AREA_X = 100;
-const BASES_AREA_Y = 400;
-
-const OPPONENT_BASES_AREA_WIDTH = 500;
-const OPPONENT_BASES_AREA_HEIGHT = CARD_WIDHT;
-const OPPONENT_BASES_AREA_X = FIELD_WIDTH / 2;
-const OPPONENT_BASES_AREA_Y = 40;
-
-const OPPONENT_HAND_AREA_WIDTH = 300;
-const OPPONENT_HAND_AREA_HEIGHT = CARD_HEIGHT_S;
-const OPPONENT_HAND_AREA_X = 150;
-const OPPONENT_HAND_AREA_Y = 10;
-
-const TRADE_AREA_X = FIELD_WIDTH / 2 + 60;
-const TRADE_AREA_Y = 170;
-const TRADE_AREA_HEIGHT = CARD_HEIGHT;
-
-const TRADE_DECK_X = TRADE_AREA_X + (CARD_WIDHT * 5 + 160) / 2; 
-const TRADE_DECK_Y = TRADE_AREA_Y + CARD_HEIGHT / 2; 
-
-const EXPLORERS_X = 352.5;
-const EXPLORERS_Y = TRADE_AREA_Y + CARD_HEIGHT / 2;
-
-const PLAYER_DECK_X = FIELD_WIDTH - 150;
-const PLAYER_DECK_Y = FIELD_HEIGHT - 80;
-const OPPONENT_DECK_X = FIELD_WIDTH - 150;
-const OPPONENT_DECK_Y = 80;
 
 let socket;
 let animations = {};
@@ -176,6 +207,13 @@ document.addEventListener('DOMContentLoaded', () => {
     width: FIELD_WIDTH,
     height: FIELD_HEIGHT,
   });
+
+  window.onresize = () => {
+    const size = fieldSize({ windowWidth: window.innerWidth, windowHeight: window.innerHeight });
+    app.view.style.width = size.FIELD_WIDTH + 'px';
+    app.view.style.height = size.FIELD_HEIGHT + 'px'
+    console.log(window.innerWidth);
+  };
 
   let ticker = PIXI.Ticker.shared;
   ticker.autoStart = false;
@@ -460,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const basesAbsX = (x) => x + BASES_AREA_X;
   const basesAbsY = (y) => y + BASES_AREA_Y;
   const basesOffset = ({ index, count }) => {
-    const gap = 110;
+    const gap = abs(110);
     if ( count % 2 == 0) {
       return (index - count / 2 + 0.5) * gap;
     }
@@ -501,7 +539,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const opponentBasesAbsX = (x) => x + OPPONENT_BASES_AREA_X;
   const opponentBasesAbsY = (y) => y + OPPONENT_BASES_AREA_Y;
   const opponentBasesOffset = ({ index, count }) => {
-    const gap = 160;
+    const gap = abs(160);
     if ( count % 2 == 0) {
       return (index - count / 2 + 0.5) * gap;
     }
@@ -557,8 +595,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     const text = new PIXI.Text(cards.length); // eslint-disable-line no-undef
-    text.position.set(x - 18, y - 25);
-    text.style = { fontSize: 55, fill: 'white' };
+    text.position.set(x - abs(18), y - abs(25));
+    text.style = { fontSize: abs(55), fill: 'white' };
     app.stage.addChild(text);
   };
 
@@ -584,8 +622,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderButtons = () => {
     const end = new PIXI.Text('END TURN'); // eslint-disable-line no-undef
-    end.position.set(FIELD_WIDTH / 2 - 80, FIELD_HEIGHT - 70);
-    end.style = { fontSize: 30, fill: 'white' };
+    end.position.set(FIELD_WIDTH / 2 - abs(62.5), FIELD_HEIGHT - abs(50));
+    end.style = { fontSize: abs(23), fill: 'white' };
     end.interactive = true;
     end.on('click', endTurn);
     end.on('tap', endTurn);
@@ -594,48 +632,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderCounters = ({ playerCounters, opponentCounters }) => {
     // FIRST_PLAYER
-    let y = FIELD_HEIGHT - 160;
-    let x = FIELD_WIDTH - 75;
+    let y = FIELD_HEIGHT - abs(125);
+    let x = FIELD_WIDTH - abs(58.5);
 
     // authority
     renderCounter({
       x,
       y,
       value: playerCounters.authority,
-      fontSize: 46,
+      fontSize: abs(36),
       fill: 'white',
     });
 
     // trade
-    y += 60;
+    y += abs(46.8);
     renderCounter({
       x,
       y,
       value: playerCounters.trade,
-      fontSize: 36,
+      fontSize: abs(28),
       fill: '#EDDA54',
     });
 
     // combat
-    y += 40;
+    y += abs(31.2);
     renderCounter({
       x,
       y,
       value: playerCounters.combat,
-      fontSize: 36,
+      fontSize: abs(28),
       fill: '#CF383C',
     });
 
     // SECOND_PLAYER
-    y = 30;
-    x = FIELD_WIDTH - 75;
+    y = abs(23.4);
+    x = FIELD_WIDTH - abs(58.5);
 
     // authority
     renderCounter({
       x,
       y,
       value: opponentCounters.authority,
-      fontSize: 46,
+      fontSize: abs(35),
       fill: 'white',
       events: {
         tap: () => damage(playerCounters.combat),
@@ -644,22 +682,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // trade
-    y += 60;
+    y += abs(46.8);
     renderCounter({
       x,
       y,
       value: opponentCounters.trade,
-      fontSize: 36,
+      fontSize: abs(28),
       fill: '#EDDA54',
     });
 
     // combat
-    y += 40;
+    y += abs(31.2);
     renderCounter({
       x,
       y,
       value: opponentCounters.combat,
-      fontSize: 36,
+      fontSize: abs(28),
       fill: '#CF383C',
     });
   };
@@ -721,7 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tradeAbsX = (x) => x + TRADE_AREA_X;
   const tradeAbsY = (y) => y + TRADE_AREA_Y;
   const tradeOffset = ({ index, count }) => {
-    const gap = 115;
+    const gap = abs(89.8);
     if ( count % 2 == 0) {
       return (index - count / 2 + 0.5) * gap;
     }
@@ -755,7 +793,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const handAbsX = (x) => x + HAND_AREA_X;
   const handAbsY = (y) => y + HAND_AREA_Y;
   const handOffset = ({ index, count }) => {
-    const gap = 90;
+    const gap = abs(90);
     if ( count % 2 == 0) {
       return (index - count / 2 + 0.5) * gap;
     }
@@ -779,7 +817,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const opponentHandAbsX = (x) => x + OPPONENT_HAND_AREA_X;
   const opponentHandAbsY = (y) => y + OPPONENT_HAND_AREA_Y;
   const opponentHandOffset = ({ index, count }) => {
-    const gap = 45;
+    const gap = abs(45);
     if ( count % 2 == 0) {
       return (index - count / 2 + 0.5) * gap;
     }
@@ -1469,18 +1507,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
-  const TABLE_AREA_WIDTH = 650;
-  const TABLE_AREA_HEIGHT = CARD_HEIGHT;
-  const TABLE_AREA_X = FIELD_WIDTH / 2 - TABLE_AREA_WIDTH / 2;
-  const TABLE_AREA_Y = 410 - CARD_HEIGHT / 2;
-
-  const DISCARD_AREA_X = FIELD_WIDTH - 230;
-  const DISCARD_AREA_Y = FIELD_HEIGHT - 80;
-
-  const OPPONENT_DISCARD_AREA_X = FIELD_WIDTH - 230;
-  const OPPONENT_DISCARD_AREA_Y = 80;
 
   const absX = ( x ) => x + TABLE_AREA_X;
   const absY = ( x ) => x + TABLE_AREA_Y;
