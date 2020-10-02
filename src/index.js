@@ -2,6 +2,8 @@ import * as PIXI from 'pixi.js';
 import Vector from './vector.js';
 import * as DECK from './deck.js';
 
+import { GlowFilter } from 'pixi-filters';
+
 const FIRST_PLAYER = 1;
 const SECOND_PLAYER = 2;
 
@@ -350,6 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
     height,
     events,
     rotation,
+    filters,
   }) => {
     texture = texture || id.split('_')[0];
     const sprite = new PIXI.Sprite(PIXI.Loader.shared.resources[texture].texture); // eslint-disable-line no-undef
@@ -381,6 +384,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (rotation !== undefined) {
       sprite.rotation = rotation;
+    }
+    if (filters !== undefined) {
+      sprite.filters = filters;
     }
     app.stage.addChild(sprite);
   };
@@ -790,9 +796,18 @@ document.addEventListener('DOMContentLoaded', () => {
     return ((index + 1) - Math.ceil(count / 2)) * gap;
   };
 
-  const renderTrade = (cards) => {
+  const renderTrade = ({
+    cards,
+    trade,
+    turn,
+    deck,
+  }) => {
     cards
       .forEach((card, index) => {
+        let filters = [];
+        if (turn === PLAYER && deck.CARDS[card.id.split('_')[0]].cost <= trade) {
+          filters.push(new GlowFilter({ distance: 5, outerStrength: 2, quality: 1 }));
+        }
         renderCard({
           id: card.id,
           x: tradeAbsX(tradeOffset({ index, count: cards.length })),
@@ -800,6 +815,7 @@ document.addEventListener('DOMContentLoaded', () => {
           events: card.events,
           width: CARD_WIDHT,
           height: CARD_HEIGHT,
+          filters,
         });
     });
   };
@@ -886,6 +902,11 @@ document.addEventListener('DOMContentLoaded', () => {
         opponentDiscard,
         opponentBases,
       } = playerMapper({ turn, player: PLAYER }); // eslint-disable-line no-undef
+      const { playerCounters, opponentCounters } = countersMapper({
+        player: PLAYER, // eslint-disable-line no-undef
+        firstPlayerCounters,
+        secondPlayerCounters,
+      });
 
       const actionRequest = actionRequestMapper({
         player: PLAYER, // eslint-disable-line no-undef
@@ -995,6 +1016,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (turn !== PLAYER) {
           return;
         }
+        if (DECK.CARDS[id.split('_')[0]].cost > playerCounters.trade) {
+          return;
+        }
         switch (actionRequest.action) {
           case SCRAP_CARD_TRADE_ROW_ACTION:
             return scrapTradeRow(id);
@@ -1008,6 +1032,10 @@ document.addEventListener('DOMContentLoaded', () => {
         .filter((card) => card.location === EXPLORERS)
         .sort((a, b) => a.index - b.index);
       explorers.forEach((explorer) => {
+        let filters = [];
+        if (turn === PLAYER && DECK.CARDS['explorer'].cost <= playerCounters.trade) {
+          filters.push(new GlowFilter({ distance: 1, outerStrength: 1, quality: 1 }));
+        }
         renderCard({
           id: explorer.id,
           x: EXPLORERS_X,
@@ -1018,10 +1046,11 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           width: CARD_WIDHT,
           height: CARD_HEIGHT,
+          filters,
         });
       });
-      renderTrade(
-        cards
+      renderTrade({
+        cards: cards
           .filter((card) => card.location === TRADE_ROW)
           .sort((a, b) => a.index - b.index)
           .map((card) => ({
@@ -1031,18 +1060,15 @@ document.addEventListener('DOMContentLoaded', () => {
               click: tradeEventsHandler,
             },
           })),
-      );
+        deck: DECK,
+        trade: playerCounters.trade,
+        turn,
+      });
       renderTradeDeck({
         x: TRADE_DECK_X,
         y: TRADE_DECK_Y,
       });
-      renderCounters(
-        countersMapper({
-          player: PLAYER, // eslint-disable-line no-undef
-          firstPlayerCounters,
-          secondPlayerCounters,
-        }),
-      );
+      renderCounters({ playerCounters, opponentCounters });
       renderPlayerBases({
         cards:
           cards
