@@ -1,4 +1,8 @@
 node_modules
+public/dist
+
+env.sh
+package-lock.json
 
 # vim
 *~
