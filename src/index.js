@@ -1,3 +1,7 @@
+import * as PIXI from 'pixi.js';
+import Vector from './vector.js';
+import * as DECK from './deck.js';
+
 const FIRST_PLAYER = 1;
 const SECOND_PLAYER = 2;
 
@@ -246,12 +250,12 @@ document.addEventListener('DOMContentLoaded', () => {
       secondPlayerCounters,
     });
     const { opponentBases } = playerMapper({ turn, player: PLAYER }); // eslint-disable-line no-undef
-    const idToDeck = (id) => ({ ...deck[id.split('_')[0]], id })
+    const idToDeck = (id) => ({ ...DECK.CARDS[id.split('_')[0]], id })
 
     const opponentOutposts = Object.keys(state.cards)
       .filter((id) => state.cards[id].location === opponentBases)
       .map(idToDeck)
-      .filter((card) => card.type === OUTPOST)
+      .filter((card) => card.type === DECK.OUTPOST)
       .filter((outpost) => outpost.defense > playerCounters.combat)
 
     if (opponentOutposts.length === 0) {
@@ -349,6 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }) => {
     texture = texture || id.split('_')[0];
     const sprite = new PIXI.Sprite(PIXI.Loader.shared.resources[texture].texture); // eslint-disable-line no-undef
+
     if (state.cards[id] !== undefined) {
       sprite.cardId = id;
       sprite.index = state.cards[id].index;
@@ -1093,12 +1098,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const connect = () => {
-    socket = new WebSocket(`ws://localhost:8080/hubs/${HUB}?player=${PLAYER}`); // eslint-disable-line no-undef
+    socket = new WebSocket(`ws://${WS_DOMAIN}:${WS_PORT}/hubs/${HUB}?player=${PLAYER}`); // eslint-disable-line no-undef
 
     socket.onerror = () => {
       const xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
-      xhr.open('POST', 'http://localhost:8080/hubs', true);
+      xhr.open('POST', `http://${WS_DOMAIN}:${WS_PORT}/hubs`, true);
       xhr.send(JSON.stringify({ name: 'first' }));
       xhr.onload = connect;
     };
@@ -1596,7 +1601,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sprite === undefined) {
         return () => true;
       }
-      const vector = new PIXI.Vector(x - sprite.x, y - sprite.y);
+      const vector = new Vector(x - sprite.x, y - sprite.y);
       let steps = Math.floor(vector.length() / speed);
       vector.normalize();
       sprite.vx = vector.x * speed;

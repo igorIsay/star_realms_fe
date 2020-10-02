@@ -8,7 +8,7 @@ const MACHINE_CULT = 2;
 const STAR_EMPIRE = 3;
 const TRADE_FEDERATION = 4;
 
-const deck = {
+const CARDS = {
   scout: {
 		faction: UNALIGNED,
 		type: SHIP,
@@ -271,3 +271,16 @@ const deck = {
 		defense:  5,
 	},
 };
+
+export {
+  CARDS,
+  SHIP,
+  BASE,
+  OUTPOST,
+  UNALIGNED,
+  BLOB,
+  MACHINE_CULT,
+  STAR_EMPIRE,
+  TRADE_FEDERATION,
+};
+

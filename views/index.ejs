@@ -3,16 +3,15 @@
     <script>
       const PLAYER = <%= player %>;
       const HUB = '<%= hub %>';
+      const WS_DOMAIN = '<%= wsDomain %>';
+      const WS_PORT = '<%= wsPort %>';
 
       const send = () => {
         const action = document.getElementById('action').value;
         socket.send(action);
       };
     </script>
-    <script src="/pixi.min.js"></script>
-    <script src="/vector.js"></script>
-    <script src="/deck.js"></script>
-    <script src="/main.js"></script>
+    <script src="/dist/main.js"></script>
   </head>
   <body style="display: flex; justify-content: center; align-items: center; background: black;">
   </body>
