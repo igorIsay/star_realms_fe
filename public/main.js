@@ -509,6 +509,9 @@ document.addEventListener('DOMContentLoaded', () => {
     cards
       .forEach((card, index) => {
         const eventsHandler = () => {
+          if (state.turn !== PLAYER) {
+            return;
+          }
           const abilities = activatedAbilities[card.id];
           const activeAbilities = Object.keys(abilities).filter(
             (id) => abilities[id] === true,
@@ -621,6 +624,22 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const renderButtons = () => {
+    const { turn } = state;
+    if (turn !== PLAYER) {
+      return;
+    }
+
+    const {
+      playerHand,
+    } = playerMapper({ turn, player: PLAYER }); // eslint-disable-line no-undef
+
+    const cardsInHand = Object.keys(state.cards)
+      .filter((id) => state.cards[id].location === playerHand);
+
+    if (cardsInHand.length > 0) {
+      return;
+    }
+
     const end = new PIXI.Text('END TURN'); // eslint-disable-line no-undef
     end.position.set(FIELD_WIDTH / 2 - abs(62.5), FIELD_HEIGHT - abs(50));
     end.style = { fontSize: abs(23), fill: 'white' };
@@ -937,6 +956,9 @@ document.addEventListener('DOMContentLoaded', () => {
           .sort((a, b) => a.index - b.index)
       );
       const handEventsHandler = ({ id }) => {
+        if (turn !== PLAYER) {
+          return;
+        }
         switch (actionRequest.action) {
           case DISCARD_ACTION:
             return discard(id);
@@ -965,6 +987,9 @@ document.addEventListener('DOMContentLoaded', () => {
           })),
       );
       const tradeEventsHandler = ({ id }) => {
+        if (turn !== PLAYER) {
+          return;
+        }
         switch (actionRequest.action) {
           case SCRAP_CARD_TRADE_ROW_ACTION:
             return scrapTradeRow(id);
@@ -1025,6 +1050,9 @@ document.addEventListener('DOMContentLoaded', () => {
           cards.filter((card) => card.location === opponentBases)
           .sort((a, b) => a.index - b.index),
         eventsHandler: (id) => {
+          if (turn !== PLAYER) {
+            return;
+          }
           switch (actionRequest.action) {
             case DESTROY_BASE_FOR_FREE_ACTION:
               return destroyBaseMissileMech(id);
